@@ -49,21 +49,18 @@ public class AudioSender {
 
     public void run() {
         while (running) {
-            byte[] buffer = new byte[line.getBufferSize()];
+            byte[] buffer = new byte[4096];
             byte[][] audioDataArray = new byte[50][];
             System.out.println("sending ... " + buffer.length);
             line.read(buffer, 0, buffer.length);
-            byte[][] sbuffer = splitBuffer(buffer);
-            for( int i = 0; i < packetSplitSize; i++) {
-                sendBuffer(sbuffer[i]);
-            }
+            sendBuffer(buffer);
         }
     }
 
     public AudioSender() {
 
         try {
-            clientIP = InetAddress.getByName("172.21.0.230"); // use this IP for client
+            clientIP = InetAddress.getByName("172.21.0.78"); // use this IP for client
         } catch (UnknownHostException e) {
             System.exit(0);
         }

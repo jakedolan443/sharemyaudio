@@ -40,8 +40,8 @@ public class AudioReceiver {
     public void run() {
         while (running) {
 
-            byte[] buffer = new byte[22050];
-            DatagramPacket packet = new DatagramPacket(buffer, 0, 22050);
+            byte[] buffer = new byte[4096];
+            DatagramPacket packet = new DatagramPacket(buffer, 0, 4096);
 
 
             try {
@@ -53,29 +53,8 @@ public class AudioReceiver {
             }
 
 
-            if (structBufferIncrement < 2) {
-                structBuffer[structBufferIncrement] = buffer;
-                structBufferIncrement++;
-                System.out.println("Increment!");
-            }
 
-            if (structBufferIncrement == 2) {
-                // Get the default system audio line
-                System.out.println("Play!");
-                //
-                byte[] audioData = reconstructBuffer(structBuffer);
-
-
-                // Iterate over each byte array in the array
-                //line.drain();
-                line.write(audioData, 0, audioData.length);
-
-                // Stop and close the audio line
-
-                structBuffer = new byte[2][];
-                structBufferIncrement = 0;
-            }
-
+            line.write(buffer, 0, buffer.length);
 
         }
     }
